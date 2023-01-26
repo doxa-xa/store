@@ -3,16 +3,23 @@ const hbs = require('hbs')
 const mongoose = require('mongoose')
 const Item = require('./utils/item')
 const path = require('path')
+const bodyParser = require('body-parser')
 
 const publicDirectoryPath = path.join(__dirname, './public')
 const viewsPath = path.join(__dirname,'./templates/views')
 const partialsPath = path.join(__dirname,'./templates/views/partials')
 
 const app = express()
+
+app.use(bodyParser.urlencoded({extended:false}))
 app.use('/public',express.static(publicDirectoryPath))
 app.set('views',viewsPath)
 app.set('view engine','hbs')
+
 hbs.registerPartials(partialsPath)
+hbs.registerHelper('JSONStringify',(object)=>{
+    return JSON.stringify(object)
+})
 
 mongoose.connect('mongodb://127.0.0.1/27017',{useNewUrlParser:true},{useUnifiedTopology:true})
 .then((result)=>{app.listen(3000)}).catch((err)=>{console.log(err)})
@@ -28,35 +35,35 @@ app.get('/create',(req,res)=>{
     })
 })
 app.get('/update',(req,res)=>{
-    res.render('controls',{
-        title:'Controls - Update'
-    })
+    console.log(req.query)
+    res.redirect('/all')
 })
 app.get('/delete',(req,res)=>{
-    res.render('controls',{
-        title:'Controls - Delete'
+    console.log(req.query)
+    res.redirect('/all')
+})
+// app.get('/submit',(req,res)=>{
+//     console.log(req.query)
+//     res.send('item added')
+// })
+
+app.get('/submit',(req,res)=>{
+    const imgUrlPrePath = './public'
+    const item = new Item({
+        name:req.query.name,
+        price:req.query.price,
+        imgUrl:imgUrlPrePath+req.query.imgUrl,
+        qty:req.query.qty,
+        description:req.query.description
+    })
+    item.save()
+    .then((result)=>{
+        res.redirect('/controls')
+    })
+    .catch((err)=>{
+        console.log(err)
     })
 })
-app.get('/submit',(req,res)=>{
-    console.log(req)
-    res.send('Item Submitted')
-})
-
-// app.get('/',(req,res)=>{
-//     const item = new Item({
-//         name:'Bit Tropic Mix',
-//         price:12.50,
-//         imgUrl:'./public/tropic-mix.jpg',
-//         qty:0,
-//         description:'15mg/g'
-//     })
-//     item.save()
-//     .then((result)=>{
-//         res.send(result)
-//     })
-//     .catch((err)=>{
-//         console.log(err)
-//     })
     app.get('/all',(req,res)=>{
         Item.find()
         .then((result)=>{

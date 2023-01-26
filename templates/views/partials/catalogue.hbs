@@ -6,8 +6,16 @@
     <h3>{{this.price}}</h3>
     <img src={{this.imgUrl}} alt="">
     
-    <input type="number" name="qty" id={{this.qty}} placeholder="0">
+    <input type="number" name="qty" placeholder={{this.qty}}>
     <p>{{this.description}}</p>
+    <form action="/delete" >
+        <input type="text" name="id" value={{this._id}} style="display: none;">
+        <input type="submit" value="Delete">
+    </form>
+    <form action="/update">
+        <input type="text" name="id" value={{this._id}} style="display: none;" >
+        <input type="submit" value="Update">
+    </form>
 </li>
 {{/each}}
 </ul>
