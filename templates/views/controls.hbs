@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+</head>
+<body>
+    <nav>
+        <a href="/create">Create</a>
+        <a href="/update">Update</a>
+        <a href="/delete">Delete</a>
+    </nav>
+    <p>Add item to Store:</p>
+    <form action="/submit">
+        <input type="text" placeholder="Item name"></br>
+        <input type="number" placeholder="Price"></br>
+        <input type="number" placeholder="Quantity"></br>
+        <input type="text" placeholder="description"></br>
+        <input type="file" name="image" id="file-upload"></br>
+        <input type="submit" value="Add">
+    </form>
+</body>
+</html>

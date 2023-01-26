@@ -1,0 +1,13 @@
+{{!--item.hbs --}}
+<ul>
+    {{#each data}}
+<li>
+    <h1>{{this.name}}</h1>
+    <h3>{{this.price}}</h3>
+    <img src={{this.imgUrl}} alt="">
+    
+    <input type="number" name="qty" id={{this.qty}} placeholder="0">
+    <p>{{this.description}}</p>
+</li>
+{{/each}}
+</ul>
