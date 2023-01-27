@@ -9,6 +9,7 @@
     
     <input type="number" name="qty" placeholder={{this.qty}}>
     <p>{{this.description}}</p>
+    <p>{{this._id}}</p>
     <form action="/delete" >
         <input type="text" name="id" value={{this._id}} style="display: none;">
         <input type="submit" value="Delete">

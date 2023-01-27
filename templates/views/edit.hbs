@@ -8,13 +8,18 @@
     <title>{{title}}</title>
 </head>
 <body>
+    <h1>{{title}}</h1>
     <form action="/updated">
-        <input type="text" name="id" value={{title}} style="display: none;">
-        <input type="text" name="name" placeholder={{name}}>
-        <input type="number" name="price" placeholder={{price}} >
-        <input type="number" name="qty" placeholder={{qty}}>
-        <input type="text" name="description" placeholder={{description}}>
-        <input type="submit" value="Update">
+        <input type="text" name="id" value={{title}} style="display: none;"><br>
+        <label for="name">Name</label><br>
+        <input type="text" name="name" placeholder={{name}}><br>
+        <label for="price">Price</label><br>
+        <input type="number" name="price" placeholder={{price}} ><br>
+        <label for="qty">Quantity</label><br>
+        <input type="number" name="qty" placeholder={{qty}}><br>
+        <label for="description">Description</label><br>
+        <input type="text" name="description" placeholder={{description}}><br>
+        <input type="submit" value="Update"><br>
     </form>
 </body>
 </html>

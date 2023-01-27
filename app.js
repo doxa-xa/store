@@ -4,6 +4,8 @@ const hbs = require('hbs')
 const mongoose = require('mongoose')
 const Item = require('./utils/item')
 const path = require('path')
+const formidable = require('formidable')
+const fs = require('fs')
 const bodyParser = require('body-parser')
 
 //paths
@@ -13,7 +15,8 @@ const partialsPath = path.join(__dirname,'./templates/views/partials')
 
 //express & middleware setup
 const app = express()
-app.use(bodyParser.urlencoded({extended:false}))
+const form = formidable({multiples:true})
+app.use(bodyParser.urlencoded({extended:true}))
 app.use('/public',express.static(publicDirectoryPath))
 app.set('views',viewsPath)
 app.set('view engine','hbs')
@@ -29,9 +32,10 @@ mongoose.connect('mongodb://127.0.0.1/27017',{useNewUrlParser:true},{useUnifiedT
 .then((result)=>{app.listen(3000)}).catch((err)=>{console.log(err)})
 
 //routing
-app.get('/controls',(req,res)=>{
+app.get('/',(req,res)=>{
     res.render('controls',{
-        title:'Controls'
+        title:'Controls',
+        date: new Date().getFullYear()
     })
 })
 app.get('/create',(req,res)=>{ 
@@ -69,22 +73,39 @@ app.get('/delete',(req,res)=>{ // <- deletes an item from store collection
     
 })
 
-app.get('/submit',(req,res)=>{ // <- creates a new Item in Store collection
-    const imgUrlPrePath = './public'
-    const item = new Item({
-        name:req.query.name,
-        price:req.query.price,
-        imgUrl:imgUrlPrePath+req.query.imgUrl,
-        qty:req.query.qty,
-        description:req.query.description
-    })
-    item.save()
-    .then((result)=>{
-        res.redirect('/controls')
-    })
-    .catch((err)=>{
-        console.log(err)
-    })
+app.post('/submit',(req,res)=>{ // <- creates a new Item in Store collection
+    const imgUrlPrePath = './public/'
+    if((req.url==='/submit')&&(req.method.toLowerCase()==='post')){
+        //parsing file upload
+        form.parse(req,(err,fields,files)=>{
+            if(err){
+                res.send('Something went wrong :( ')
+            }
+            var tempFilePath = files.imgUrl.filepath
+            var projectFilePath = path.join(__dirname ,'./public' ,files.imgUrl.originalFilename)
+            fs.rename(tempFilePath,projectFilePath,(err)=>{
+                if(err)console.log(err)
+                console.log(`File ${files.imgUrl.originalFilename} has been uploaded @ ${projectFilePath}`)
+            })
+        //adding new item to Store collection
+            const item = new Item({
+                name:fields.name,
+                price:fields.price,
+                imgUrl:imgUrlPrePath+files.imgUrl.originalFilename,
+                qty:fields.qty,
+                description:fields.description
+            })
+            item.save()
+            .then((result)=>{
+                res.status(200)
+                res.redirect('/all')
+            })
+            .catch((err)=>{
+                console.log(err)
+            })
+            
+        })
+    }
 })
     app.get('/all',(req,res)=>{ // <- list all Items currently in Store collection
         Item.find()
