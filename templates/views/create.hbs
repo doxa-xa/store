@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+</head>
+
+<body>
+    <nav>
+        <h1>Web Store Backend</h1>
+        <a href="/">Back to Homepage</a>
+        <a href="/all">Item Cataloge</a>
+        {{> user}}
+    </nav>
+    <form action="/submit" enctype="multipart/form-data" method="post">
+        <input name="name" type="text" placeholder="Item name"></br>
+        <input name="price" type="number" placeholder="Price"></br>
+        <input name="qty" type="number" placeholder="Quantity"></br>
+        <input name="description" type="text" placeholder="description"></br>
+        <input name="imgUrl" type="file" multiple="multiple" name="image" id="file-upload"></br>
+        <input type="submit" value="Add">
+    </form>
+</body>
+</html>
