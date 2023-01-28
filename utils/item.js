@@ -1,6 +1,6 @@
 const mongoose = require('mongoose')
-const Schema = mongoose.Schema
 
+const Schema = mongoose.Schema
 const itemSchema = new Schema({
     name:{
         type:String,
@@ -25,5 +25,13 @@ const itemSchema = new Schema({
 })
 
 const Item = mongoose.model('Item',itemSchema)
+
+exports.errorHandler = (err,req,res,next)=>{
+    if(err){
+        res.redirect('/')
+        console.log(err)
+        next()
+    }
+}
 
 module.exports = Item

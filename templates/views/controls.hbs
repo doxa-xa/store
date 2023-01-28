@@ -12,16 +12,22 @@
         <h1>Web Store Backend</h1>
         <a href="/create">Create Item</a>
         <a href="/all">Item Cataloge</a>
+        {{> user}}
     </nav>
-    <p>{{action}} Store:</p>
-    <form action="/submit" enctype="multipart/form-data" method="post">
-        <input name="name" type="text" placeholder="Item name"></br>
-        <input name="price" type="number" placeholder="Price"></br>
-        <input name="qty" type="number" placeholder="Quantity"></br>
-        <input name="description" type="text" placeholder="description"></br>
-        <input name="imgUrl" type="file" multiple="multiple" name="image" id="file-upload"></br>
-        <input type="submit" value="Add">
-    </form>
+    <main>
+        <article>
+            <p>In this interface you can:</p><br>
+            <ul>
+                <li>Add</li>
+                <li>Delete</li>
+                <li>Update</li>
+                <li>List</li>
+            </ul><br>
+            <p>The items in the store</p>
+            <aside>Every item has it's own name,price,quantity,image,description and unique id</aside>
+        </article>
+
+    </main>
     <footer><h2>Created by Stoyan Todorov ® {{date}}</h2></footer>
 </body>
 </html>
